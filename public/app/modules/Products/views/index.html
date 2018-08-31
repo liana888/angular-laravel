@@ -1,0 +1,13 @@
+<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" ng-model="search" change-search>
+<div class="row">
+    <div class="col-lg-4 mt-4" ng-repeat="product in products | filter:search ">
+        <img class="card-img-top img-size" ng-src="{{ '/images/' + product.image }}" alt="Card image cap">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ product.name + ($index + 1)}}</h5>
+                <p class="card-text">{{ product.price }}</p>
+                <a ui-sref="show({ id : product.id })" class="btn btn-primary">Go product page</a>
+            </div>
+        </div>
+    </div>
+</div>

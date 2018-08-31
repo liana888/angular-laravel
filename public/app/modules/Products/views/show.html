@@ -1,0 +1,14 @@
+
+<!-- change-search -->
+<div class="card">
+    <div class="card-body">
+        <button class="btn " ng-class="product.id === 4 ? 'btn-info' : 'btn-danger'">Text</button>
+
+        {{ product.id }}
+        <img ng-src="{{ '/images/' + product.image }}">
+        {{ product.name }}
+        {{ product.price }}
+
+        <span ng-click="open()">Open</span>
+    </div>
+</div>
