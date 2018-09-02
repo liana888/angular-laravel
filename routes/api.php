@@ -14,6 +14,7 @@ Route::group([
     Route::post('refresh', 'AuthController@refresh');
     Route::post('me', 'AuthController@me');
     Route::post('forgot', 'AuthController@forgot');
+    Route::post('newPassword', 'AuthController@newPassword');
     Route::get('verify/{token}', 'AuthController@verify');
 
 });

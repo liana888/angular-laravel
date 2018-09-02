@@ -59,14 +59,27 @@ app.controller('VerifyEmailController', function ($stateParams, AuthService, toa
     });
 })
 
-app.controller('ForgotController', function ($scope, AuthService) {
+app.controller('ForgotController', function ($scope, AuthService, toastr) {
     $scope.email = null;
     $scope.forgot = () => {
         AuthService.forgot({email: $scope.email}, (res) => {
-
+            toastr.success('Check your email');
         }, (err) => {
-
-        })
+            toastr.error('Invalid email')
+        });
     }
 
-})
+});
+
+app.controller('NewPasswordController', function ($scope, AuthService, $state, $stateParams, toastr) {
+    // $scope.password = null;
+    // $scope.password_confirmation = null;
+    $scope.newPassword = () => {
+        AuthService.newPassword({password: $scope.password, password_confirmation: $scope.password_confirmation, token: $stateParams.token}, (res) => {
+            toastr.success('oooooo');
+            $state.go('login');
+        }, (err) => {
+            toastr.error('Password does not match the confirm password')
+        })
+    }
+});

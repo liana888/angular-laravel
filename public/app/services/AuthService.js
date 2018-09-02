@@ -26,6 +26,11 @@ app.factory('AuthService', ['$resource', ($resource) => {
             url: '/api/auth/forgot',
             method: 'POST'
         },
+        newPassword : {
+            url: '/api/auth/newPassword',
+            method: 'POST'
+        },
+
 
 
     });

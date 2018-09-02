@@ -69,5 +69,23 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 }
             },
         })
+
+        .state('newPassword', {
+            url: "newPassword/:token",
+            views: {
+                'header': {
+                    templateUrl: "/app/modules/Header/views/index.html",
+                    controller: "HeaderController"
+                },
+                'content': {
+                    templateUrl: "/app/modules/Auth/views/newPassword.html",
+                    controller: "NewPasswordController"
+                },
+                'footer': {
+                    templateUrl: "/app/modules/Footer/views/index.html",
+                    controller : "HomeIndexController"
+                }
+            },
+        })
 })
 
