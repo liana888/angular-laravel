@@ -1,13 +1,31 @@
-<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" ng-model="search" change-search>
+<a ui-sref="edit({id : 0})"> Create Product</a>
 <div class="row">
-    <div class="col-lg-4 mt-4" ng-repeat="product in products | filter:search ">
-        <img class="card-img-top img-size" ng-src="{{ '/images/' + product.image }}" alt="Card image cap">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">{{ product.name + ($index + 1)}}</h5>
-                <p class="card-text">{{ product.price }}</p>
-                <a ui-sref="show({ id : product.id })" class="btn btn-primary">Go product page</a>
-            </div>
-        </div>
-    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Short Description</th>
+            <th scope="col">Price</th>
+            <th scope="col">Created At</th>
+            <th scope="col">Created By</th>
+            <th scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="product in products">
+            <th scope="row">{{ ($index + 1) }}</th>
+            <td>{{ product.name }}</td>
+            <td>{{ product.short_description }}</td>
+            <td>{{ product.price }}</td>
+            <td>{{ product.created_at }}</td>
+            <td>{{ product.user.name }}</td>
+            <td>
+                <a ui-sref="show({id : product.id})" class="btn btn-info text-white">View</a>
+                <a ui-sref="edit({id : product.id})" class="btn btn-success text-white">Edit</a>
+                <a class="btn btn-danger text-white">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>

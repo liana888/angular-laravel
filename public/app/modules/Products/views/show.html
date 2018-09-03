@@ -1,14 +1,7 @@
-
-<!-- change-search -->
-<div class="card">
-    <div class="card-body">
-        <button class="btn " ng-class="product.id === 4 ? 'btn-info' : 'btn-danger'">Text</button>
-
-        {{ product.id }}
-        <img ng-src="{{ '/images/' + product.image }}">
-        {{ product.name }}
-        {{ product.price }}
-
-        <span ng-click="open()">Open</span>
-    </div>
-</div>
+Product Name : {{ product.name }} <br />
+Product Description : {{ product.description }} <br />
+Product Price : {{ product.price }} <br />
+Product User Name : {{ product.user.name }} <br />
+Product Short Description : {{ product.short_description }} <br />
+Product Created At : {{ product.created_at }} <br />
+Product Views : {{ product.views }} <br />

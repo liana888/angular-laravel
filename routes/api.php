@@ -17,3 +17,11 @@ Route::group([
     Route::get('verify/{token}', 'AuthController@verify');
 
 });
+
+
+Route::group([
+    'middleware' => ['api', 'auth:api'],
+    'namespace' => 'Api'
+], function () {
+    Route::resource('products', 'ProductController');
+});

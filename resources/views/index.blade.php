@@ -16,11 +16,7 @@
 
         {{--Content--}}
         <div class="container">
-            <div class="card mt-4">
-                <div class="card-body">
-                    <section ui-view="content"></section>
-                </div>
-            </div>
+            <section ui-view="content" class="mt-5"></section>
         </div>
 
 

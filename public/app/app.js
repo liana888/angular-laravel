@@ -7,17 +7,17 @@ app.run(function ($rootScope, authManager, $transitions, AuthService, $state, $q
         if($rootScope.isAuthenticated && transition.to().name !== 'logout') {
             let deferredPromise = $q.defer();
 
-            deferredPromise = AuthService.refresh({}, (res) =>{
+            AuthService.refresh({}, (res) =>{
                 localStorage.setItem('jwtToken', res.access_token);
-                $q.resolve();
+                deferredPromise.resolve();
             }, (err) => {
                 authManager.unauthenticate();
                 localStorage.removeItem('jwtToken');
                 $state.go('login');
-                $q.reject();
+                deferredPromise.reject();
             });
 
-            return deferredPromise;
+            return deferredPromise.promise;
         }
     });
 });

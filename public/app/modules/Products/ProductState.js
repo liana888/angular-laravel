@@ -35,4 +35,22 @@ app.config(function ($stateProvider) {
                 }
             },
         })
+
+        .state('edit', {
+            url: "/edit/:id",
+            views: {
+                'header': {
+                    templateUrl: "/app/modules/Header/views/index.html",
+                    controller: "HeaderController"
+                },
+                'content': {
+                    templateUrl: "/app/modules/Products/views/edit.html",
+                    controller: "ProductEditController"
+                },
+                'footer': {
+                    templateUrl: "/app/modules/Footer/views/index.html",
+                    controller : "HomeIndexController"
+                }
+            },
+        })
 })
