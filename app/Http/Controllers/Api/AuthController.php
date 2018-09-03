@@ -3,9 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\ResetPasswordRequest;
+use App\Http\Requests\loginRequest;
+use App\Http\Requests\EmailSendRequest;
 use App\Mail\ForgotPasswordEmail;
 use App\Mail\VerificationEmail;
 use App\Models\User;
+use App\Models\PasswordReset;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
@@ -20,7 +24,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register', 'verify', 'forgot']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register', 'verify', 'forgot', 'newPassword']]);
     }
 
     /**
@@ -28,7 +32,7 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login()
+    public function login(LoginRequest $request)
     {
         $credentials = request(['email', 'password']);
 
@@ -138,10 +142,38 @@ class AuthController extends Controller
 
     }
 
-    public function forgot(Request $request){
+    public function forgot(EmailSendRequest $request){
+        $email = $request['email'];
+        $user = User::query()
+            ->where('email', '=', $email)
+            ->first();
         $token = str_random(64);
-        Mail::to($request->input('email'))
-            ->queue(new ForgotPasswordEmail($token));
+        if(!empty($user)){
+            try{
+                PasswordReset::query()->create(['email' => $email, 'token' => $token]);
+                Mail::to($request->input('email'))
+                ->queue(new ForgotPasswordEmail($user, $token));
+            } catch (\Exception $exception) {
+                dd($exception->getMessage());
+                return response('Oops something went wrong.', 500);
+            }
+
+            return response() ->json(['massage' =>'Check your email']);
+        }
+        return response()->json(['message' => 'Invalid Email'] , 403);
+    }
+
+    public function newPassword(ResetPasswordRequest $request){
+        $email = PasswordReset::query()->where('token' , '=' , $request['token'])
+        ->first()->getAttribute('email');
+        $user =  User::query()->where('email','=', $email)
+        ->first();
+        $updated = $user->update(['password' => $request->input('password')]);
+        if($updated) {
+            return response()->json(['message' => 'Your password has been changed. Please Log In']);
+        } else {
+            return response()->json(['message' => 'Somethin went wrong , please try agail'] , 500);
+        }
     }
 }
 
