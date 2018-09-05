@@ -1,13 +1,15 @@
 const app = angular.module('app', ['ui.router', 'angular-jwt', 'ngResource', 'ngAnimate', 'toastr']);
 
-app.run(function ($rootScope, authManager, $transitions, AuthService, $state, $q) {
+app.run(function ($rootScope, authManager, $transitions, AuthService, $state, $q, ProductService) {
     authManager.checkAuthOnRefresh();
 
+    $rootScope.getdata = '';
+
     $transitions.onStart({}, (transition) => {
-        if($rootScope.isAuthenticated && transition.to().name !== 'logout') {
+        if ($rootScope.isAuthenticated && transition.to().name !== 'logout') {
             let deferredPromise = $q.defer();
 
-            AuthService.refresh({}, (res) =>{
+            AuthService.refresh({}, (res) => {
                 localStorage.setItem('jwtToken', res.access_token);
                 deferredPromise.resolve();
             }, (err) => {
@@ -24,7 +26,7 @@ app.run(function ($rootScope, authManager, $transitions, AuthService, $state, $q
 
 app.config(function Config($httpProvider, jwtOptionsProvider) {
     jwtOptionsProvider.config({
-        tokenGetter: function() {
+        tokenGetter: function () {
             return localStorage.getItem('jwtToken');
         }
     });
@@ -35,4 +37,17 @@ app.config(function Config($httpProvider, jwtOptionsProvider) {
 
 app.config(($urlRouterProvider) => {
     $urlRouterProvider.otherwise('/404');
+});
+
+app.directive('listenChange', function ($rootScope, ProductService) {
+    return {
+        restrict: 'A',
+        link: (scope, el) => {
+          el.keyup(function () {
+              ProductService.query({filters : this.value}, (res) => {
+                  $rootScope.$broadcast('getData', {products: res.products});
+              })
+          })
+        }
+    }
 });

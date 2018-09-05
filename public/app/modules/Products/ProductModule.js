@@ -1,5 +1,9 @@
-app.controller('ProductIndexController', ($scope, ProductService, toastr) => {
+app.controller('ProductIndexController', ($scope, $rootScope, ProductService, toastr) => {
     $scope.products = {};
+
+    $rootScope.$on('getData', function (res, args) {
+        $scope.products = args.products;
+    });
 
     let getProducts = () => {
         ProductService.query({},  (res) => {
@@ -9,7 +13,16 @@ app.controller('ProductIndexController', ($scope, ProductService, toastr) => {
         })
     }
 
-    getProducts();
+    $scope.deleteProduct = (el, productId) => {
+        if(confirm('a')){
+            ProductService.destroy ({id : productId}, (res) => {
+                toastr.success('Successfully deleted')
+                el.currentTarget.parentElement.parentElement.remove();
+            }, (err) => {
+                toastr.error('Error')
+            })
+        }
+    }
 });
 
 
@@ -67,3 +80,20 @@ app.controller('ProductEditController', ($scope, $rootScope, $stateParams, Produ
     }
 
 });
+
+
+app.controller('ProductDestroyController', ($scope, $rootScope, $stateParams, ProductService, $state) => {
+    let id = $stateParams.id;
+    $scope.delete = () => {
+        ProductService.destroy({id : id}, (res) => {
+            $state.go('products')
+        }, (err) => {
+
+        })
+    }
+
+    $scope.cancel = () => {
+        $state.go('products')
+    }
+});
+
