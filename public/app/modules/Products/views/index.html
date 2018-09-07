@@ -1,6 +1,7 @@
 <a ui-sref="edit({id : 0})"> Create Product</a>
 <input ng-model="getdata" placeholder="getData" listen-change/>
 
+<div ui-view="hello"></div>
 <div class="row">
     <table class="table">
         <thead>
@@ -16,19 +17,23 @@
         </thead>
         <tbody>
         <tr ng-repeat="product in products">
-            <th scope="row">{{ ($index + 1) }}</th>
+            <th scope="row">{{pagination.per_page * (pagination.current_page - 1) + ($index +1) }}</th>
             <td>{{ product.name }}</td>
             <td>{{ product.short_description }}</td>
             <td>{{ product.price }}</td>
             <td>{{ product.created_at }}</td>
             <td>{{ product.user.name }}</td>
             <td>
-                <a ui-sref="show({id : product.id})" class="btn btn-info text-white">View</a>
-                <a ui-sref="edit({id : product.id})" class="btn btn-success text-white">Edit</a>
-                <a ui-sref="destroy({id : product.id})"  class="btn btn-danger text-white">Delete</a>
+                <a ui-sref="products.show({id : product.id})" class="btn btn-info text-white">View</a>
+                <a ui-sref="products.edit({id : product.id})" class="btn btn-success text-white">Edit</a>
+                <a ui-sref="products.destroy({id : product.id})"  class="btn btn-danger text-white">Delete</a>
                 <!--<a ng-click="deleteProduct($event, product.id)"  class="btn btn-danger text-white">Delete</a>-->
             </td>
         </tr>
         </tbody>
     </table>
+
+    <ul class="pagination">
+        <li ng-repeat ="page in pages track by $index" class="page-item"><a  ng-click="changePage(($index + 1))"  class="page-link">{{$index + 1}}</a></li>
+    </ul>
 </div>

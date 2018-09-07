@@ -13,16 +13,27 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $keyWord = $request->get('filters');
+
         $products = Products::query()
             ->select(['id', 'name', 'price', 'short_description', 'views', 'user_id', 'created_at'])
             ->with(['user' => function($query) {
                 $query->select(['id', 'name']);
             }])
-            ->get();
+            ->where('name', 'like',  '%' . $keyWord . '%')
+            ->paginate(2);
 
-        return response()->json(['products' => $products]);
+
+        return response()->json([
+            'products' => $products->items(),
+            'pagination' => [
+                'per_page' => $products->perPage(),
+                'current_page' => $products->currentPage(),
+                'total' => $products->total(),
+            ]
+        ]);
     }
 
     /**

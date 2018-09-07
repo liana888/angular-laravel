@@ -1,7 +1,8 @@
 app.factory('ProductService', ['$resource', ($resource) => {
     return $resource('/api/products/:id', {id : '@id'}, {
         query : {
-            method : 'GET'
+            method : 'GET',
+            cancellable: true
         },
         get : {
             method : 'GET'

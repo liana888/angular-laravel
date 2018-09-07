@@ -1,17 +1,25 @@
 app.controller('ProductIndexController', ($scope, $rootScope, ProductService, toastr) => {
     $scope.products = {};
+    $scope.pages = [];
 
     $rootScope.$on('getData', function (res, args) {
         $scope.products = args.products;
+        $scope.pagination = args.pagination;
+        $scope.pages = new Array(Math.ceil($scope.pagination.total / $scope.pagination.per_page));
     });
-
-    let getProducts = () => {
-        ProductService.query({},  (res) => {
-            $scope.products = res.products;
-        }, (err) => {
-            toastr.error('Error in loading products.')
+    $scope.changePage = (page) => {
+        ProductService.query({page: page}, (res) => {
+            $rootScope.$broadcast('getData', {products: res.products, pagination: res.pagination});
         })
     }
+
+    // let getProducts = () => {
+    //     ProductService.query({},  (res) => {
+    //         $scope.products = res.products;
+    //     }, (err) => {
+    //         toastr.error('Error in loading products.')
+    //     })
+    // }
 
     $scope.deleteProduct = (el, productId) => {
         if(confirm('a')){
@@ -95,5 +103,9 @@ app.controller('ProductDestroyController', ($scope, $rootScope, $stateParams, Pr
     $scope.cancel = () => {
         $state.go('products')
     }
+});
+
+app.controller('ProductHelloController', ($scope, $rootScope, $stateParams, ProductService, $state) => {
+
 });
 

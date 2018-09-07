@@ -44,9 +44,14 @@ app.directive('listenChange', function ($rootScope, ProductService) {
         restrict: 'A',
         link: (scope, el) => {
           el.keyup(function () {
-              ProductService.query({filters : this.value}, (res) => {
-                  $rootScope.$broadcast('getData', {products: res.products});
-              })
+              if (this.getSuggestionRequest) {
+                  this.getSuggestionRequest.$cancelRequest();
+              }
+
+              this.getSuggestionRequest = ProductService.query({filters : this.value}, (res) => {
+                  $rootScope.$broadcast('getData', {products: res.products, pagination: res.pagination});
+              });
+
           })
         }
     }
