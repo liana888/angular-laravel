@@ -49,13 +49,19 @@ app.controller('ProductShowController', ($scope, $rootScope, $stateParams, Produ
 });
 
 
-app.controller('ProductEditController', ($scope, $rootScope, $stateParams, ProductService, toastr, $state) => {
+app.controller('ProductEditController', ($scope, $rootScope, $stateParams, ProductService, toastr, $state, Upload, authManager) => {
     $scope.product = {
         name : null,
         description : null,
         short_description : null,
-        price : null
+        price : null,
+        avatar : null
     };
+
+    $scope.uploadChange = function (file) {
+        console.log(file, $scope.product.avatar);
+    }
+
 
     let getProduct = () => {
         ProductService.get({id : $stateParams.id}, (res) => {
@@ -79,6 +85,7 @@ app.controller('ProductEditController', ($scope, $rootScope, $stateParams, Produ
             })
         } else {
             ProductService.store($scope.product,  (res) => {
+                $scope.upload($scope.product.avatar, res.id )
                 toastr.success('Successfully Created.');
                 $state.go('products');
             }, (err) => {
@@ -87,6 +94,21 @@ app.controller('ProductEditController', ($scope, $rootScope, $stateParams, Produ
         }
     }
 
+
+    // upload on file select or drop
+    $scope.upload = function (file, product_id) {
+        Upload.upload({
+            url: 'api/product-avatar/' + product_id,
+            data: {avatar: file, token: 'bearer ' + authManager.getToken()}
+        }).then(function (res) {
+
+        }, function (res) {
+
+        }, function (evt) {
+            var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+            console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+        });
+    };
 });
 
 

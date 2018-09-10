@@ -11,6 +11,7 @@ gulp.task('concat-angular', function() {
         './public/bower_components/angular-resource/angular-resource.min.js',
         './public/bower_components/angular-animate/angular-animate.min.js',
         './public/bower_components/angular-toastr/dist/angular-toastr.tpls.min.js',
+        './public/bower_components/ng-file-upload/ng-file-upload-all.min.js',
         ])
         .pipe(concat('angular.js'))
         .pipe(gulp.dest('./public/build'));

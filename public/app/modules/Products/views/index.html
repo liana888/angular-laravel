@@ -1,4 +1,4 @@
-<a ui-sref="edit({id : 0})"> Create Product</a>
+<a ui-sref="products.edit({id : 0})"> Create Product</a>
 <input ng-model="getdata" placeholder="getData" listen-change/>
 
 <div ui-view="hello"></div>
@@ -6,6 +6,7 @@
     <table class="table">
         <thead>
         <tr>
+            <th scope="col">Avatar</th>
             <th scope="col">#</th>
             <th scope="col">Name</th>
             <th scope="col">Short Description</th>
@@ -17,6 +18,7 @@
         </thead>
         <tbody>
         <tr ng-repeat="product in products">
+            <th><img src="{{ product.avatar }}" width="32px" height="32px" style="object-fit: cover"></th>
             <th scope="row">{{pagination.per_page * (pagination.current_page - 1) + ($index +1) }}</th>
             <td>{{ product.name }}</td>
             <td>{{ product.short_description }}</td>

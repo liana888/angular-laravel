@@ -24,5 +24,6 @@ Route::group([
     'middleware' => ['api', 'auth:api'],
     'namespace' => 'Api'
 ], function () {
+    Route::post('product-avatar/{product_id}', 'ProductController@uploadAvatar');
     Route::resource('products', 'ProductController');
 });

@@ -1,4 +1,4 @@
-const app = angular.module('app', ['ui.router', 'angular-jwt', 'ngResource', 'ngAnimate', 'toastr']);
+const app = angular.module('app', ['ui.router', 'angular-jwt', 'ngResource', 'ngAnimate', 'toastr', 'ngFileUpload']);
 
 app.run(function ($rootScope, authManager, $transitions, AuthService, $state, $q, ProductService) {
     authManager.checkAuthOnRefresh();

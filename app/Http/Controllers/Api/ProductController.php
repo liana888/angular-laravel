@@ -59,7 +59,7 @@ class ProductController extends Controller
         $created = Products::query()
             ->create($request->all());
 
-        return response()->json(['success' => (bool) $created]);
+        return response()->json(['success' => (bool) $created, 'id' => $created->id]);
     }
 
     /**
@@ -118,5 +118,10 @@ class ProductController extends Controller
     public function destroy($id)
     {
         Products::query()->find($id)->delete();
+    }
+
+    public function uploadAvatar(Request $request, $productId){
+        $avatar = $request->file('avatar');
+        $avatar->storeAs('/public/products/', $productId . '.jpg');
     }
 }
