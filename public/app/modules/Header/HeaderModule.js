@@ -1,3 +1,3 @@
-app.controller('HeaderController', function () {
+app.controller('HeaderControllerx', function () {
 
 })
