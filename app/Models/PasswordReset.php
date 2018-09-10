@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class PasswordReset extends Model
 {
-    public $timestamps = false;
+    public $timestamps = 0;
     public $incrementing = false;
 
     protected $primaryKey = 'email';
